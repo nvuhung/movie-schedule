@@ -10,6 +10,9 @@
     "react-google-maps": "^9.2.2",
     "react-scripts": "1.0.17"
   },
+  "engines": {
+    "node": ">=6.11.3"
+  },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "set GENERATE_SOURCEMAP=false&&react-app-rewired build",
