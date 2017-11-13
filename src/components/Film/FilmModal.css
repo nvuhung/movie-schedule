@@ -1,0 +1,7 @@
+.ant-carousel .slick-dots {
+    bottom: 30px !important;
+}
+
+.ant-carousel .slick-dots li {
+    border: solid 1px #fff;
+}
