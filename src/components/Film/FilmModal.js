@@ -97,7 +97,7 @@ export default class FilmModal extends Component {
                                     {
                                         this.state.detail.list_image_view
                                                         .map(img => 
-                                                            <div key={img}><img width="100%" height="300" alt={this.props.data.film_name} src={img} /></div>)
+                                                            <div key={img}><img width="100%" height="300" alt={this.props.data.film_name} src={img.replace('http', 'https')} /></div>)
                                     }
                                 </Carousel>
                             }

@@ -20,7 +20,7 @@ export default class Film extends Component {
                 onClick={({key}) => this.onClick(key)} 
                 selectedKeys={[this.props.filmSelected ? this.props.filmSelected.film_id.toString() : '']}>
                 {
-                    this.props.films.map((item) => 
+                    this.props.films && this.props.films.map((item) => 
                         <Menu.Item key={item.film_id} >
                             <div style={{ display: '-webkit-box' }}>
                                 <img alt={item.film_name} width="80" src={item.poster_thumb} />
@@ -38,20 +38,18 @@ export default class Film extends Component {
     }
 
     render() {
-        const headerContent = this.props.filmSelected;
+        const headerContent = this.props.filmSelected || {};
         return (
             <div>
                 <FilmModal data={headerContent} closeModal={() => this.setState({isShowModal: false})} visible={this.state.isShowModal} />
 
                 <Dropdown overlay={this.getMenuItem()}>
                     <div>
-                        {
-                            headerContent && <Header
-                                                openModal={() => this.setState({isShowModal: true})}
-                                                text={headerContent.film_name} 
-                                                subText={headerContent.film_duration + ' phút - IMDB: ' + headerContent.imdb_point} 
-                                                img={headerContent.poster_thumb} />
-                        }
+                        <Header
+                            openModal={() => this.setState({isShowModal: true})}
+                            text={headerContent.film_name} 
+                            subText={headerContent.film_duration + ' phút - IMDB: ' + headerContent.imdb_point} 
+                            img={headerContent.poster_thumb} />
                     </div>
                 </Dropdown>
             </div>  

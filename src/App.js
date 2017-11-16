@@ -26,7 +26,7 @@ class App extends Component {
 
   state = {
     loading: false,
-    listCinemas: Data.listCinemas,
+    listCinemas: [],
     listSessions: null,
     listShowingFilms: [],
     filmSelected: null,
@@ -34,13 +34,15 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.fetchShowingFilms();
+    let listCinemas = Data.listCinemas;
+    listCinemas.forEach(cinema => cinema.selected = cinema.cinemas[0]);
+    this.setState({listCinemas: listCinemas});
 
-    this.state.listCinemas.forEach(cinema => cinema.selected = cinema.cinemas[0]);
+    this.fetchShowingFilms();
   }
 
-  async fetchSession(filmId) {
-    this.setState({ loading: true });
+  async fetchSession(filmId, isShowLoading) {
+    isShowLoading && this.setState({ loading: true });
     const startDate = dateMenu[0].id;
     const endDate = dateMenu.slice(-1)[0].id;
     const listSessions = await (await fetch(`${HOST_URL}/get-session?filmId=${filmId}&startDate=${startDate}&endDate=${endDate}`)).json();
@@ -48,9 +50,10 @@ class App extends Component {
   }
 
   async fetchShowingFilms() {
+    this.setState({ loading: true });
     const listShowingFilms = await (await fetch(`${HOST_URL}/get-list-showing-films`)).json();
     this.setState({listShowingFilms: listShowingFilms, filmSelected: listShowingFilms[0]});
-    this.fetchSession(listShowingFilms[0].film_id);
+    this.fetchSession(listShowingFilms[0].film_id, false);
   }
 
   getSession(cinemaId, dateId) {
@@ -66,7 +69,7 @@ class App extends Component {
 
   onChangeFilm(film) {
     this.setState({filmSelected: film});
-    this.fetchSession(film.film_id);
+    this.fetchSession(film.film_id, true);
   }
 
   render() {
@@ -103,8 +106,7 @@ class App extends Component {
                       <Col key={cinema.p_cinema_id} span={8}>
                         <Cinema cinemas={cinema.cinemas} cinemaSelected={this.state.listCinemas[index].selected} onChange={(item) => this.onChangeCinema(index, item) }></Cinema>
                         {
-                          this.state.listSessions && 
-                          (<Menu 
+                          <Menu 
                             style={{ lineHeight: 0 }}
                             selectedKeys={this.state.dateSelected}>
                             {
@@ -113,10 +115,10 @@ class App extends Component {
                                     style={{lineHeight: 'normal', overflow: 'auto'}}
                                     className="MenuItem" 
                                     key={date.id}>
-                                    <Session sessions={this.getSession(cinema.selected.cinema_id, date.id)} />
+                                    <Session isLoading={this.state.loading} sessions={this.getSession(cinema && cinema.selected && cinema.selected.cinema_id, date.id)} />
                                   </Menu.Item>)
                             }
-                          </Menu>)
+                          </Menu>
                         }
                       </Col>
                     ))

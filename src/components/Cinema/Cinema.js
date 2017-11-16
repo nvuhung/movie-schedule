@@ -36,20 +36,18 @@ export default class Cinema extends Component {
     }
 
     render() {
-        const headerContent = this.props.cinemaSelected;
+        const headerContent = this.props.cinemaSelected || {};
         return (
             <div>
                 <CinemaModal data={headerContent} closeModal={() => this.setState({isShowModal: false})} visible={this.state.isShowModal} />
                 
                 <Dropdown overlay={this.getMenuItem()}>
                     <div>
-                        {
-                            headerContent && <Header
-                                                openModal={() => this.setState({isShowModal: true})}
-                                                text={headerContent.cinema_name} 
-                                                subText={headerContent.cinema_address} 
-                                                img={headerContent.cinema_image} />
-                        }
+                        <Header
+                            openModal={() => this.setState({isShowModal: true})}
+                            text={headerContent.cinema_name} 
+                            subText={headerContent.cinema_address} 
+                            img={headerContent.cinema_image} />
                     </div>
                 </Dropdown>
             </div>
