@@ -107,12 +107,12 @@ selectNodeVersion
 if [ -e "$DEPLOYMENT_SOURCE/package.json" ]; then
   cd "$DEPLOYMENT_SOURCE"
   echo "$DEPLOYMENT_SOURCE"
-  eval npm --version
+  eval $NPM_CMD --version
   echo "Running npm install"
-  eval npm install
+  eval $NPM_CMD install
   exitWithMessageOnError "npm failed"
   echo "Building react app"
-  eval npm run build
+  eval $NPM_CMD run build
   exitWithMessageOnError "react build failed"
  cd - > /dev/null
 fi
